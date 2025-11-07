@@ -1,0 +1,159 @@
+.attempt-container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.title {
+  color: #006d77;
+  margin-bottom: 20px;
+}
+
+.main-start-btn {
+  background: #118ab2;
+  color: #fff;
+  padding: 14px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.main-start-btn:hover {
+  background: #073b4c;
+}
+
+/* ---------- Domains Grid ---------- */
+.domains-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.domain-card {
+  background: #f8f9fa;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  padding: 30px 15px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.domain-card:hover {
+  background: #e6f7ff;
+  border-color: #118ab2;
+  transform: scale(1.05);
+}
+
+.domain-card h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+/* ---------- Quiz List ---------- */
+.quiz-list {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.quiz-card {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.quiz-card h3 {
+  margin: 0 0 8px 0;
+  color: #444;
+}
+
+.start-btn, .disabled-btn, .back-btn, .submit-btn {
+  margin-top: 10px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.start-btn {
+  background: #06d6a0;
+  color: white;
+}
+
+.start-btn:hover {
+  background: #04b487;
+}
+
+.disabled-btn {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.back-btn {
+  background: #118ab2;
+  color: white;
+  margin-top: 20px;
+}
+
+.back-btn:hover {
+  background: #073b4c;
+}
+
+/* ---------- Active Quiz ---------- */
+.quiz-box {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.quiz-question {
+  margin-bottom: 20px;
+}
+
+.quiz-question p {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.quiz-question label {
+  display: block;
+  margin: 5px 0;
+}
+
+.timer {
+  font-size: 16px;
+  font-weight: bold;
+  color: #e63946;
+  margin-bottom: 15px;
+}
+
+.submit-btn {
+  background: #ef476f;
+  color: white;
+}
+
+.submit-btn:hover {
+  background: #c81d43;
+}
+
+/* ---------- Result ---------- */
+.result-box {
+  margin-top: 30px;
+  padding: 20px;
+  background: #e6ffe6;
+  border: 2px solid #06d6a0;
+  border-radius: 10px;
+}
