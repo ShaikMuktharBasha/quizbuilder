@@ -5,7 +5,7 @@ import "./ParticipantDashboard.css";
 
 export default function ParticipantDashboard() {
   const navigate = useNavigate();
-  const fullName = localStorage.getItem("fullName");
+  const username = localStorage.getItem("username");
   const email = localStorage.getItem("email");
 
   const handleLogout = () => {
@@ -19,7 +19,7 @@ export default function ParticipantDashboard() {
       <header className="dashboard-header">
         <h2>Hello, Participant 👋</h2>
         <div className="header-right">
-          <span className="user-name">{fullName}</span>
+          <span className="user-name">{username}</span>
           <button className="logout-btn" onClick={handleLogout}>
             🚪 Sign Out
           </button>
@@ -43,7 +43,7 @@ export default function ParticipantDashboard() {
         {/* Profile */}
         <div className="profile-box">
           <h3>Profile</h3>
-          <p><strong>Name:</strong> {fullName}</p>
+          <p><strong>Name:</strong> {username}</p>
           <p><strong>Email:</strong> {email}</p>
           <p><strong>Role:</strong> Participant</p>
         </div>

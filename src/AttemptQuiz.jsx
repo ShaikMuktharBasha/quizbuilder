@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { getQuizzesByDomain, getMyResults, submitQuiz } from "./api";
+import { getAllQuizzes, getMyResults, submitQuiz } from "./api";
+import { useNavigate } from "react-router-dom";
 import "./AttemptQuiz.css";
 
 export default function AttemptQuiz() {
@@ -12,27 +13,28 @@ export default function AttemptQuiz() {
   const [timeLeft, setTimeLeft] = useState(null);
   const [attemptedQuizIds, setAttemptedQuizIds] = useState([]);
 
-  const username = localStorage.getItem("fullName") || "student1";
+  const userId = localStorage.getItem("userId") || "1";
+  const navigate = useNavigate();
 
   // ✅ Get already attempted quizzes
   useEffect(() => {
-    getMyResults(username)
-      .then((res) => setAttemptedQuizIds(res.map((r) => r.quiz.id)))
+    getMyResults(userId)
+      .then((res) => setAttemptedQuizIds(res.map((r) => r.quizId))) // Assuming quizId is in response
       .catch((err) => console.error(err));
-  }, [username]);
+  }, [userId]);
 
-  // ✅ Load quizzes by domain
-  const loadDomainQuizzes = async (domain) => {
-    setSelectedDomain(domain);
+  // ✅ Load all quizzes
+  const loadAllQuizzes = async () => {
     setStep("quizzes");
     setResult(null);
     setActiveQuiz(null);
     setAnswers({});
     try {
-      const res = await getQuizzesByDomain(domain);
-      setQuizzes(res);
+      const allQuizzes = await getAllQuizzes();
+      setQuizzes(allQuizzes);
     } catch (err) {
       console.error(err);
+      alert("Failed to load quizzes");
     }
   };
 
@@ -42,9 +44,8 @@ export default function AttemptQuiz() {
     setStep("active");
     setAnswers({});
     setResult(null);
-    if (quiz.timeLimit) {
-      setTimeLeft(quiz.timeLimit * 60);
-    }
+    // Removed timeLimit since it's not in the new schema
+    setTimeLeft(null);
   };
 
   // ✅ Timer logic
@@ -69,21 +70,20 @@ const handleSubmit = async () => {
     });
 
     // 🔍 Debug logs
-    console.log("👉 Questions:", activeQuiz.questions.map(q => ({ id: q.id, text: q.text })));
+    console.log("👉 Questions:", activeQuiz.questions.map(q => ({ id: q.id, text: q.questionText })));
     console.log("👉 Selected answers object:", answers);
-    console.log("👉 Payload to send:", { username, answers: mappedAnswers });
+    console.log("👉 Payload to send:", { userId, answers: mappedAnswers });
 
     const res = await submitQuiz(activeQuiz.id, {
-      username,
+      userId,
       answers: mappedAnswers,
     });
 
     console.log("✅ Backend response:", res);
 
-    setResult(res);
-    setActiveQuiz(null);
-    setStep("result");
-    setAttemptedQuizIds((prev) => [...prev, activeQuiz.id]);
+    // Show success message and redirect to results page
+    alert(`Quiz submitted successfully! You scored ${res.score} out of ${res.total}`);
+    navigate("/my-results");
   } catch (err) {
     console.error("❌ Error submitting quiz:", err);
   }
@@ -103,31 +103,16 @@ const handleSubmit = async () => {
 
       {/* STEP 1: Start button */}
       {step === "start" && (
-        <button className="main-start-btn" onClick={() => setStep("domains")}>
+        <button className="main-start-btn" onClick={() => loadAllQuizzes()}>
           Start Quiz
         </button>
       )}
 
-      {/* STEP 2: Domain selection */}
-      {step === "domains" && (
-        <div className="domains-grid">
-          {["Math", "Science", "History"].map((d) => (
-            <div
-              key={d}
-              className="domain-card"
-              onClick={() => loadDomainQuizzes(d)}
-            >
-              <h2>{d}</h2>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* STEP 3: Quizzes under selected domain */}
+      {/* STEP 2: Quizzes list */}
       {step === "quizzes" && (
         <div className="quiz-list">
-          <h2>{selectedDomain} Quizzes</h2>
-          {quizzes.length === 0 && <p>No quizzes found in this domain.</p>}
+          <h2>Available Quizzes</h2>
+          {quizzes.length === 0 && <p>No quizzes available.</p>}
           {quizzes.map((q) => (
             <div key={q.id} className="quiz-card">
               <h3>{q.title}</h3>
@@ -156,31 +141,40 @@ const handleSubmit = async () => {
     {timeLeft !== null && (
       <p className="timer">Time left: {formatTime(timeLeft)}</p>
     )}
-    {activeQuiz.questions.map((q) => (
-      <div key={q.id} className="quiz-question">
-        <p>{q.text}</p>
-        {q.options.map((opt, i) => {
-          const optionKey = String.fromCharCode(65 + i); // "A", "B", "C", "D"
-          return (
-            <label key={i}>
-              <input
-                type="radio"
-                name={`q-${q.id}`}
-                value={optionKey}   // ✅ send "A", "B", "C", or "D"
-                checked={answers[q.id] === optionKey}
-                onChange={() =>
-                  setAnswers({ ...answers, [q.id]: optionKey })
-                }
-              />
-              {optionKey}. {opt}
-            </label>
-          );
-        })}
-      </div>
-    ))}
-    <button onClick={handleSubmit} className="submit-btn">
-      Submit Quiz
-    </button>
+    {activeQuiz.questions.length === 0 ? (
+      <p>No questions available for this quiz yet.</p>
+    ) : (
+      activeQuiz.questions.map((q) => {
+        const options = [q.optionA, q.optionB, q.optionC, q.optionD];
+        return (
+          <div key={q.id} className="quiz-question">
+            <p>{q.questionText}</p>
+            {options.map((opt, i) => {
+              const optionKey = String.fromCharCode(65 + i); // "A", "B", "C", "D"
+              return (
+                <label key={i}>
+                  <input
+                    type="radio"
+                    name={`q-${q.id}`}
+                    value={optionKey}   // ✅ send "A", "B", "C", or "D"
+                    checked={answers[q.id] === optionKey}
+                    onChange={() =>
+                      setAnswers({ ...answers, [q.id]: optionKey })
+                    }
+                  />
+                  {optionKey}. {opt}
+                </label>
+              );
+            })}
+          </div>
+        );
+      })
+    )}
+    {activeQuiz.questions.length > 0 && (
+      <button onClick={handleSubmit} className="submit-btn">
+        Submit Quiz
+      </button>
+    )}
   </div>
 )}
 

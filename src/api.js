@@ -1,8 +1,10 @@
 import axios from "axios";
-/*
 
-const USER_API_URL = "http://localhost:9096/api/users";
-const QUIZ_API_URL = "http://localhost:9096/api/quizzes";
+// Use environment variable for API base URL, fallback to localhost for development
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:9096";
+
+const USER_API_URL = `${API_BASE_URL}/api/users`;
+const QUIZ_API_URL = `${API_BASE_URL}/api/quizzes`;
 
 /* ---------------- USER APIs ---------------- */
 
@@ -39,8 +41,8 @@ export async function getAllQuizzes() {
 }
 
 // Get quizzes created by current user
-export async function getMyQuizzes(username) {
-  const res = await axios.get(`${QUIZ_API_URL}/myquizzes/${username}`);
+export async function getMyQuizzes(userId) {
+  const res = await axios.get(`${QUIZ_API_URL}/myquizzes/${userId}`);
   return res.data;
 }
 
@@ -55,12 +57,6 @@ export async function getQuizById(id) {
   return res.data;
 }
 
-// ✅ Get quizzes by domain
-export async function getQuizzesByDomain(domain) {
-  const res = await axios.get(`${QUIZ_API_URL}/domain/${domain}`);
-  return res.data;
-}
-
 // Submit quiz answers
 export async function submitQuiz(id, submission) {
   const res = await axios.post(`${QUIZ_API_URL}/${id}/submit`, submission);
@@ -68,7 +64,19 @@ export async function submitQuiz(id, submission) {
 }
 
 // Get results of logged-in user
-export async function getMyResults(username) {
-  const res = await axios.get(`${QUIZ_API_URL}/results/user/${username}`);
+export async function getMyResults(userId) {
+  const res = await axios.get(`${QUIZ_API_URL}/quiz-results/users/${userId}`);
+  return res.data;
+}
+
+// Get results for a specific quiz
+export async function getQuizResults(quizId) {
+  const res = await axios.get(`${QUIZ_API_URL}/quiz-results/${quizId}`);
+  return res.data;
+}
+
+// Get all results (admin)
+export async function getAllResults() {
+  const res = await axios.get(`${QUIZ_API_URL}/quiz-results`);
   return res.data;
 }

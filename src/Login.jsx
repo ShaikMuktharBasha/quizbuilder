@@ -15,7 +15,7 @@ export default function Login() {
     if (result && result.id) {
       // store in localStorage
       localStorage.setItem("userId", result.id);
-      localStorage.setItem("fullName", result.fullName);
+      localStorage.setItem("username", result.username);
       localStorage.setItem("email", result.email);
       localStorage.setItem("role", result.role);
 

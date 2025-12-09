@@ -1,35 +1,34 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { getMyResults } from "./api";
 import "./MyResults.css";
-
-const API_BASE = "http://localhost:9096/api/quizzes";
 
 export default function MyResults() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const username = localStorage.getItem("fullName"); // Replace with logged-in user
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
-    if (!username) {
-      setError("Username not found. Please login.");
+    if (!userId) {
+      setError("User not found. Please login.");
       setLoading(false);
       return;
     }
 
-    setLoading(true);
-    setError(null);
-
-    axios
-      .get(`${API_BASE}/quiz-results/users/${username}`)
-      .then((res) => setResults(res.data))
-      .catch((err) => {
-        console.error("AxiosError:", err);
+    async function fetchResults() {
+      try {
+        const data = await getMyResults(userId);
+        setResults(data);
+      } catch (err) {
+        console.error("Failed to fetch results:", err);
         setError("Failed to fetch quiz results. Please try again later.");
-      })
-      .finally(() => setLoading(false));
-  }, [username]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchResults();
+  }, [userId]);
 
   return (
     <div className="results-container">

@@ -7,12 +7,12 @@ export default function MyQuizzes() {
   const [loading, setLoading] = useState(true);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
 
-  const username = localStorage.getItem("fullName"); // ✅ must match your login storage
+  const userId = localStorage.getItem("userId"); // ✅ must match your login storage
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await getMyQuizzes(username);
+        const data = await getMyQuizzes(userId);
         setQuizzes(data);
       } catch (err) {
         console.error("Failed to fetch quizzes:", err);
@@ -22,7 +22,7 @@ export default function MyQuizzes() {
       }
     }
     fetchData();
-  }, [username]);
+  }, [userId]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this quiz?")) return;

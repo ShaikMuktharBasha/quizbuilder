@@ -7,9 +7,8 @@ export default function CreateQuiz() {
 
   // Quiz details
   const [quiz, setQuiz] = useState({
-    domain: "",
     title: "",
-    timeLimit: ""
+    description: ""
   });
 
   // Questions
@@ -77,21 +76,23 @@ export default function CreateQuiz() {
   };
 
   const saveQuiz = async () => {
-    const creator = localStorage.getItem("fullName");
-    if (!creator) {
+    const createdBy = localStorage.getItem("userId");
+    if (!createdBy) {
       alert("You must be logged in to create a quiz!");
       return;
     }
 
     const payload = {
-      domain: quiz.domain,
       title: quiz.title,
-      timeLimit: Number(quiz.timeLimit),
-      createdBy: creator,
+      description: quiz.description || "",
+      createdBy: createdBy,
       questions: questions.map((q) => ({
-        text: q.text,
-        options: q.options.filter((opt) => opt && opt.trim() !== ""),
-        answer: q.answer
+        questionText: q.text,
+        optionA: q.options[0] || "",
+        optionB: q.options[1] || "",
+        optionC: q.options[2] || "",
+        optionD: q.options[3] || "",
+        correctOption: q.answer
       }))
     };
 
@@ -114,14 +115,6 @@ export default function CreateQuiz() {
       {/* Step 1: Quiz Details */}
       {step === 1 && (
         <div className="quiz-details">
-          <label>Domain:</label>
-          <select name="domain" value={quiz.domain} onChange={handleQuizChange}>
-            <option value="">Select Domain</option>
-            <option value="Math">Math</option>
-            <option value="Science">Science</option>
-            <option value="History">History</option>
-          </select>
-
           <label>Quiz Title:</label>
           <input
             type="text"
@@ -130,12 +123,12 @@ export default function CreateQuiz() {
             onChange={handleQuizChange}
           />
 
-          <label>Time Limit (minutes):</label>
-          <input
-            type="number"
-            name="timeLimit"
-            value={quiz.timeLimit}
+          <label>Description:</label>
+          <textarea
+            name="description"
+            value={quiz.description}
             onChange={handleQuizChange}
+            rows="3"
           />
 
           <button onClick={() => setStep(2)}>Next →</button>
@@ -205,13 +198,10 @@ export default function CreateQuiz() {
         <div className="review-quiz">
           <h3>Review Quiz</h3>
           <p>
-            <strong>Domain:</strong> {quiz.domain}
-          </p>
-          <p>
             <strong>Title:</strong> {quiz.title}
           </p>
           <p>
-            <strong>Time Limit:</strong> {quiz.timeLimit} minutes
+            <strong>Description:</strong> {quiz.description}
           </p>
 
           <h4>Questions:</h4>
@@ -257,26 +247,22 @@ export default function CreateQuiz() {
             <strong>Quiz ID:</strong> {savedQuiz.id}
           </p>
           <p>
-            <strong>Domain:</strong> {savedQuiz.domain}
-          </p>
-          <p>
             <strong>Title:</strong> {savedQuiz.title}
           </p>
           <p>
-            <strong>Time Limit:</strong> {savedQuiz.timeLimit} minutes
+            <strong>Description:</strong> {savedQuiz.description}
           </p>
 
           <h4>Questions:</h4>
           <ol>
             {savedQuiz.questions.map((q, i) => (
               <li key={i}>
-                {q.text}
+                {q.questionText}
                 <ul>
-                  {q.options.map((opt, idx) => (
-                    <li key={idx}>
-                      {String.fromCharCode(65 + idx)}. {opt}
-                    </li>
-                  ))}
+                  <li>A. {q.optionA}</li>
+                  <li>B. {q.optionB}</li>
+                  <li>C. {q.optionC}</li>
+                  <li>D. {q.optionD}</li>
                 </ul>
               </li>
             ))}

@@ -4,7 +4,7 @@ import "./CreatorDashboard.css";
 
 export default function CreatorDashboard() {
   const navigate = useNavigate();
-  const fullName = localStorage.getItem("fullName");
+  const username = localStorage.getItem("username");
   const role = localStorage.getItem("role");
   const email = localStorage.getItem("email");
 
@@ -19,7 +19,7 @@ export default function CreatorDashboard() {
       <header className="dashboard-header">
         <h2>Hello, {role} 👋</h2>
         <div className="header-right">
-          <span className="user-name">{fullName}</span>
+          <span className="user-name">{username}</span>
           <button className="logout-btn" onClick={handleLogout}>
             🚪 Sign Out
           </button>
@@ -38,7 +38,7 @@ export default function CreatorDashboard() {
         {/* Profile */}
         <div className="profile-box">
           <h3>Profile</h3>
-          <p><strong>Name:</strong> {fullName}</p>
+          <p><strong>Name:</strong> {username}</p>
           <p><strong>Email:</strong> {email}</p>
           <p><strong>Role:</strong> {role}</p>
         </div>

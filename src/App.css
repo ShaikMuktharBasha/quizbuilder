@@ -2,144 +2,197 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(270deg, #ff00ff, #00f7ff, #39ff14, #ffea00);
-  background-size: 800% 800%;
-  animation: gradientBG 10s ease infinite;
-  color: rgb(65, 11, 11);
+  background: #f8f9fa;
+  color: #333;
   height: 100vh;
   overflow-x: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-n
 
 .app-container {
   text-align: center;
   width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
 }
 
 /* Header */
 .header {
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .logo {
-  font-size: 3rem;
-  font-weight: 900;
-  letter-spacing: 2px;
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
   text-align: center;
-  color: #00f7ff;
-  text-shadow: 0 0 15px rgba(0,247,255,0.9),
-               0 0 30px rgba(106,17,203,0.9),
-               0 0 45px rgba(37,117,252,0.9);
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
 }
 
 /* Body Section */
 .main-content {
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto;
   padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Tagline animation */
+/* Tagline */
 .tagline {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 600;
   margin-bottom: 1rem;
-  animation: zoomInOut 4s ease-in-out infinite;
-  text-shadow: 0 0 10px rgba(0,247,255,0.7);
+  color: #34495e;
+  line-height: 1.2;
 }
 
-/* Subtext animation */
+/* Subtext */
 .subtext {
   font-size: 1.1rem;
-  opacity: 0.9;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
+  color: #7f8c8d;
   line-height: 1.6;
-  animation: fadeZoom 6s ease-in-out infinite;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Zoom animation for tagline */
-@keyframes zoomInOut {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+/* Button Group */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
 }
 
-/* Subtle fade + zoom for subtext */
-@keyframes fadeZoom {
-  0% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
-  100% { opacity: 0.8; transform: scale(1); }
-}
-
-
-/* Glowing Sign In Button */
+/* Buttons */
 .glow-btn {
-  background: linear-gradient(135deg, #2575fc, #6a11cb);
-  color: #00f7ff;
-  font-weight: bold;
-  font-size: 1.2rem;
-  padding: 14px 50px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 12px 40px;
   border: none;
-  border-radius: 50px;
+  border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(37,117,252,0.8), 
-              0 0 40px rgba(106,17,203,0.6);
-  animation: pulseGlow 2s infinite alternate;
-  transition: transform 0.2s ease-in-out;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
 }
 
 .glow-btn:hover {
-  transform: scale(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(52, 152, 219, 0.4);
 }
 
-@keyframes pulseGlow {
-  from {
-    box-shadow: 0 0 15px rgba(37,117,252,0.6),
-                0 0 30px rgba(106,17,203,0.4);
-  }
-  to {
-    box-shadow: 0 0 25px rgba(37,117,252,1),
-                0 0 50px rgba(106,17,203,0.8);
-  }
+.glow-btn.secondary {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+}
+
+.account-link {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #7f8c8d;
+}
+
+.account-link span {
+  color: #3498db;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.account-link span:hover {
+  color: #2980b9;
 }
 
 /* Modal Styling */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(4px);
 }
 
 .modal-content {
-  background: rgba(230, 11, 11, 0.15);
-  backdrop-filter: blur(15px);
-  border-radius: 20px;
+  background: white;
+  border-radius: 12px;
   padding: 2rem;
-  width: 350px;
+  width: 400px;
   max-width: 90%;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-  animation: slideUp 0.4s ease;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
-.modal-content select {
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-  font-size: 1rem;
-  background: rgba(0,247,255,0.9);
-}
-
 
 .modal-content h2 {
   margin-bottom: 1.5rem;
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 1rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+  border-color: #3498db;
+}
+
+.modal-content button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.modal-content button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+.toggle-text {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.toggle-text span {
+  color: #3498db;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.toggle-text span:hover {
+  color: #2980b9;
+}
   color: #00f7ff;
   font-size: 1.8rem;
 }
@@ -186,20 +239,4 @@ n
   font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; } to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
